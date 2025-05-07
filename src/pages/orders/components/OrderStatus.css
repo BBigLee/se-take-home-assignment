@@ -1,0 +1,93 @@
+.order-status {
+  display: flex;
+  gap: 20px;
+}
+
+.status-section {
+  flex: 1;
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.order-card {
+  background: white;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.order-card.vip {
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+.order-card.pending {
+  border-left: 4px solid #ffc107;
+}
+
+.order-card.completed {
+  border-left: 4px solid #28a745;
+}
+
+.timestamp {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 5px;
+}
+
+.order-type-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.order-card.vip .order-type-badge {
+  background: #ffd700;
+  color: #000;
+}
+.order-card.vip .timestamp {
+  color: #aaa;
+}
+
+.order-card.regular .order-type-badge {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.order-card.vip.pending {
+  border-left: 4px solid #ffc107;
+  background: linear-gradient(to right, #1a1a1a, #666);
+}
+
+.order-card.vip.completed {
+  border-left: 4px solid #28a745;
+  background: linear-gradient(to right, #1a1a1a, #666);
+}
+
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.order-card.vip::before {
+  content: '⭐';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 12px;
+}

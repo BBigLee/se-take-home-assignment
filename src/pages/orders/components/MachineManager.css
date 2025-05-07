@@ -1,0 +1,63 @@
+.machine-manager {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.machines-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.machine {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.machine.idle {
+  border-color: #28a745;
+}
+
+.machine.busy {
+  border-color: #dc3545;
+  background: #fff5f5;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.idle {
+  background: #28a745;
+  color: white;
+}
+
+.status-badge.busy {
+  background: #dc3545;
+  color: white;
+}
+
+.current-order {
+  margin-top: 10px;
+  font-size: 0.85em;
+  padding: 5px;
+  background: #f8f9fa;
+  border-radius: 3px;
+}
+
+.order-type {
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 3px;
+}

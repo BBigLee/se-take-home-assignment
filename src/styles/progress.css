@@ -1,0 +1,77 @@
+/* 进度条容器 */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 进度条填充 */
+.progress-bar-fill {
+    height: 100%;
+    background-color: #1890ff;
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
+}
+
+/* 条纹效果 */
+.progress-bar-striped .progress-bar-fill {
+    background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.15) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: 1rem 1rem;
+}
+
+/* 动画效果 */
+.progress-bar-animated .progress-bar-fill {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+    from {
+        background-position: 1rem 0;
+    }
+    to {
+        background-position: 0 0;
+    }
+}
+
+/* 不同状态的样式 */
+.progress-bar-success .progress-bar-fill {
+    background-color: #52c41a;
+}
+
+.progress-bar-warning .progress-bar-fill {
+    background-color: #faad14;
+}
+
+.progress-bar-error .progress-bar-fill {
+    background-color: #ff4d4f;
+}
+
+/* 小尺寸进度条 */
+.progress-bar-sm {
+    height: 6px;
+}
+
+/* 大尺寸进度条 */
+.progress-bar-lg {
+    height: 12px;
+}
+
+/* 圆角进度条 */
+.progress-bar-round {
+    border-radius: 100px;
+}
+.progress-bar-round .progress-bar-fill {
+    border-radius: 100px;
+}

@@ -4,16 +4,22 @@ import MachineManager from "./components/MachineManager";
 import OrderStatus from "./components/OrderStatus";
 import "./index.css";
 
+// Define an Orders component, for managing orders
 function Orders() {
+  // Define order status
   const [orders, setOrders] = useState([]);
+  // Define machine status
   const [machines, setMachines] = useState([
-    { id: 'machine_id_1', status: "idle", currentOrder: null, startTime: null },
+    { id: "machine_id_1", status: "idle", currentOrder: null, startTime: null },
   ]);
+  // Define pending order status
   const [pendingOrders, setPendingOrders] = useState([]);
+  // Define order ID counter
   const orderIdCount = useRef(1);
+  // Define machine ID counter
   const machineIdCount = useRef(1);
 
-  // 处理新订单
+  // Handle new order
   const handleAddOrder = (order) => {
     const newOrder = {
       ...order,
@@ -45,12 +51,12 @@ function Orders() {
     }
   };
 
-  // 添加新机器
+  // Add new machine
   const handleAddMachine = () => {
     setMachines((prev) => [
       ...prev,
       {
-        id: `machine_id_${machineIdCount.current++}`,
+        id: `machine_id_${++machineIdCount.current}`,
         status: "idle",
         currentOrder: null,
         startTime: null,
@@ -58,7 +64,16 @@ function Orders() {
     ]);
   };
 
-  // 处理订单的逻辑
+  // Remove machine
+  const handleRemoveMachine = (machine) => {
+    setMachines((prev) => prev.filter((item) => item !== machine));
+    if (machine.currentOrder?.isProcess) {
+      machine.currentOrder.isProcess = false;
+      setPendingOrders((prev) => [...prev]);
+    }
+  };
+
+  // Logic to process orders
   useEffect(() => {
     const processOrders = () => {
       machines.forEach((machine) => {
@@ -67,10 +82,8 @@ function Orders() {
             (order) => !order.isProcess
           );
           if (orderToProcess) {
-            orderToProcess.isProcess = true;
-            setPendingOrders([...pendingOrders]);
 
-            // 更新机器状态
+            // Update machine status
             setMachines((prev) =>
               prev.map((m) =>
                 m.id === machine.id
@@ -79,9 +92,9 @@ function Orders() {
               )
             );
 
-            // 10秒后完成订单
-            setTimeout(() => {
-              // 从待处理队列中移除订单
+            // Complete the order after 10 seconds
+            const timeout = setTimeout(() => {
+              // Remove the order from the pending queue
               setPendingOrders((prev) =>
                 prev.filter(({ id }) => id !== orderToProcess.id)
               );
@@ -97,7 +110,7 @@ function Orders() {
                 )
               );
 
-              // 重置机器状态
+              // Reset machine status
               setMachines((prev) =>
                 prev.map((m) =>
                   m.id === machine.id
@@ -106,6 +119,10 @@ function Orders() {
                 )
               );
             }, 10000);
+
+            orderToProcess.isProcess = true;
+            orderToProcess.timeout = timeout;
+            setPendingOrders([...pendingOrders]);
           }
         }
       });
@@ -120,7 +137,11 @@ function Orders() {
       <div className="main-content">
         <div className="left-panel">
           <OrderForm onSubmit={handleAddOrder} />
-          <MachineManager machines={machines} onAddMachine={handleAddMachine} />
+          <MachineManager
+            machines={machines}
+            onAddMachine={handleAddMachine}
+            onRemoveMachine={handleRemoveMachine}
+          />
         </div>
         <div className="right-panel">
           <OrderStatus orders={orders} pendingOrders={pendingOrders} />

@@ -2,26 +2,31 @@ import React, { useState, useEffect } from "react";
 import "./OrderStatus.css";
 import Progress from "../../../components/Progress";
 
+// Defin an OrderStatus component，for displaying the status of orders
 function OrderStatus({ orders, pendingOrders }) {
+  // Define a state variable progress to store the progress of orders
   const [progress, setProgress] = useState({});
+  // Filter out completed orders
   const completedOrders = orders.filter(
     (order) => order.status === "completed"
   );
+  // Sort by completion time
   completedOrders.sort(
     (a, b) => new Date(a.finishedAt) - new Date(b.finishedAt)
   );
 
+  // useEffect hook for initializing or updating progress
   useEffect(() => {
-    // 初始化或更新进度
+    // Initialize or update progress
     pendingOrders.forEach((order) => {
       if (order.isProcess) {
-        if (!progress[order.id]) {
+        if (!progress[order.id]?.percent) {
           setProgress((prev) => ({
             ...prev,
-            [order.id]: 0,
+            [order.id]: { percent: 0 },
           }));
 
-          // 启动进度更新
+          // Start progress update
           const startTime = Date.now();
           const interval = setInterval(() => {
             const elapsed = Date.now() - startTime;
@@ -29,7 +34,7 @@ function OrderStatus({ orders, pendingOrders }) {
 
             setProgress((prev) => ({
               ...prev,
-              [order.id]: newProgress,
+              [order.id]: { percent: newProgress, interval },
             }));
 
             if (newProgress >= 100) {
@@ -38,14 +43,18 @@ function OrderStatus({ orders, pendingOrders }) {
           }, 100);
         }
       } else {
-        // 重置进度
+        if (progress[order.id]) {
+          clearInterval(progress[order.id].interval);
+          clearTimeout(order.timeout)
+        }
         setProgress((prev) => ({
           ...prev,
-          [order.id]: 0,
+          [order.id]: { percent: 0 },
         }));
       }
     });
-  }, [pendingOrders]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingOrders]); // Dependency array for useEffect
 
   return (
     <div className="order-status">
@@ -64,9 +73,9 @@ function OrderStatus({ orders, pendingOrders }) {
               <div className="timestamp">
                 Created: {new Date(order.createdAt).toLocaleTimeString()}
               </div>
-              <br/>
+              <br />
               <div className="progress-bar-success">
-                <Progress percent={progress[order.id] || 0} />
+                <Progress percent={progress[order.id]?.percent || 0} />
               </div>
             </div>
           ))}
@@ -89,7 +98,7 @@ function OrderStatus({ orders, pendingOrders }) {
                 Created: {new Date(order.createdAt).toLocaleTimeString()}
               </div>
               <div className="timestamp">
-                Finished: {new Date(order.finishedAt).toLocaleTimeString()}
+                Completed: {new Date(order.finishedAt).toLocaleTimeString()}
               </div>
             </div>
           ))}

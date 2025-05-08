@@ -1,46 +1,57 @@
 import React, { useState, useEffect } from "react";
 import "./MachineManager.css";
-import Progress from '../../../components/Progress'
+import Progress from "../../../components/Progress";
 
-function MachineManager({ machines, onAddMachine }) {
+// Define a MachineManager component, for managing machines in the order management system
+function MachineManager({ machines, onAddMachine, onRemoveMachine }) {
+  // Define a state variable progress to store the progress of machines
   const [progress, setProgress] = useState({});
 
+  // Use useEffect hook to update progress when machines change
   useEffect(() => {
-    // 初始化或更新进度
+    // Initialize or update progress
     machines.forEach((machine) => {
+      // If the machine status is busy and there is a current order
       if (machine.status === "busy" && machine.currentOrder) {
+        // If there is no progress for this machine in progress, initialize progress
         if (!progress[machine.id]) {
           setProgress((prev) => ({
             ...prev,
             [machine.id]: 0,
           }));
 
-          // 启动进度更新
+          // Start progress update
           const startTime = Date.now();
           const interval = setInterval(() => {
+            // Calculate the elapsed time
             const elapsed = Date.now() - startTime;
+            // Calculate the new progress
             const newProgress = Math.min((elapsed / 10000) * 100, 100);
 
+            // Update progress
             setProgress((prev) => ({
               ...prev,
               [machine.id]: newProgress,
             }));
 
+            // If progress reaches 100, clear the timer
             if (newProgress >= 100) {
               clearInterval(interval);
             }
           }, 100);
         }
       } else {
-        // 重置进度
+        // Reset progress
         setProgress((prev) => ({
           ...prev,
           [machine.id]: 0,
         }));
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [machines]);
 
+  // Return the JSX structure of the component
   return (
     <div className="machine-manager">
       <h2>Machine Management</h2>
@@ -55,6 +66,14 @@ function MachineManager({ machines, onAddMachine }) {
                 </span>
                 <span className="status-text">{machine.status}</span>
               </div>
+              {machines.length > 1 && (
+                <div
+                  className="remove-machine"
+                  onClick={() => onRemoveMachine(machine)}
+                >
+                  <span>×</span>
+                </div>
+              )}
             </div>
             {machine.currentOrder && (
               <div className="current-order">
@@ -64,9 +83,9 @@ function MachineManager({ machines, onAddMachine }) {
                     {machine.currentOrder.type.toUpperCase()}
                   </div>
                 </div>
-                <br/>
+                <br />
                 <div className="progress-bar-success">
-                  <Progress percent={progress[machine.id]||0} />
+                  <Progress percent={progress[machine.id] || 0} />
                 </div>
               </div>
             )}

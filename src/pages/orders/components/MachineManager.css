@@ -2,7 +2,7 @@
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 
@@ -14,10 +14,11 @@
 }
 
 .machine {
+  position: relative;
   background: white;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
@@ -60,4 +61,24 @@
   color: #666;
   font-size: 0.9em;
   margin-top: 3px;
+}
+.machine-header .remove-machine {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: #666;
+  color: white;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+}
+.machine-header .remove-machine:hover {
+  background: #333;
+}
+.machine-header .remove-machine span {
+  transform: translate(0, -1px);
 }

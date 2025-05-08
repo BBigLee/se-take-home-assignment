@@ -1,8 +1,8 @@
 import React from 'react';
 
-// 定义一个名为Layout的函数组件，接收一个参数children
+// Define a function component named Layout that takes a parameter called children
 const Layout = ({ children }) => {
-  // 返回一个div元素，class为layout，包含children
+  // Returns a div element with a class of layout, containing children
   return (
     <div className="layout">
       {children}

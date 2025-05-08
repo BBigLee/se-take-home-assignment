@@ -3,12 +3,12 @@ import '../styles/progress.css';
 
 // 定义一个Progress组件，接收一个percent参数
 const Progress = ({ percent }) => {
-  // 确保进度值在0-100之间
+  // Ensure the progress value is between 0 and 100
   const normalizedPercent = Math.min(100, Math.max(0, percent));
 
   return (
     <div className="progress-bar">
-      {/* 根据进度值设置进度条的宽度 */}
+      {/* Set the width of the progress bar based on the progress value */}
       <div
         className="progress-bar-fill"
         style={{ width: `${normalizedPercent}%` }}
